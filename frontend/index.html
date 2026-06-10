@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallpaper Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-bg"></div>
+    <div class="auth-container">
+      <div class="auth-brand">
+        <div class="auth-logo">WH</div>
+        <h1 data-i18n="appName">Wallpaper Hub</h1>
+        <p class="auth-tagline" data-i18n="welcome">Ласкаво просимо</p>
+      </div>
+
+      <div id="panel-login" class="auth-card">
+        <h2 data-i18n="loginTitle">Вхід у систему</h2>
+        <form id="login-form" class="auth-form">
+          <label class="input-group">
+            <span data-i18n="username">Ім'я користувача</span>
+            <input id="login-username" type="text" autocomplete="username" required>
+          </label>
+          <label class="input-group">
+            <span data-i18n="password">Пароль</span>
+            <input id="login-password" type="password" autocomplete="current-password" required>
+          </label>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="signIn">Увійти</button>
+          <button type="button" class="btn btn-ghost btn-block" id="show-register" data-i18n="signUp">Зареєструватися</button>
+        </form>
+        <div class="auth-lang-row">
+          <span data-i18n="language">Мова</span>
+          <select id="auth-lang" class="select">
+            <option value="uk">Українська</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="panel-register" class="auth-card hidden">
+        <h2 data-i18n="registerTitle">Новий акаунт</h2>
+        <form id="register-form" class="auth-form">
+          <label class="input-group">
+            <span data-i18n="username">Ім'я користувача</span>
+            <input id="reg-username" type="text" required minlength="3">
+          </label>
+          <label class="input-group">
+            <span data-i18n="password">Пароль</span>
+            <input id="reg-password" type="password" required minlength="4">
+          </label>
+          <label class="input-group">
+            <span data-i18n="profileName">Ім'я профілю</span>
+            <input id="reg-name" type="text" required>
+          </label>
+          <label class="input-group">
+            <span data-i18n="language">Мова</span>
+            <select id="reg-language" class="select">
+              <option value="uk">Українська</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+          <label class="input-group">
+            <span data-i18n="theme">Тема</span>
+            <select id="reg-theme" class="select">
+              <option value="dark" data-i18n="themeDark">Темна</option>
+              <option value="light" data-i18n="themeLight">Світла</option>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="createAccount">Створити акаунт</button>
+          <button type="button" class="btn btn-ghost btn-block" id="show-login" data-i18n="backToLogin">Назад до входу</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="sidebar-logo">WH</span>
+        <span class="sidebar-title" data-i18n="appName">Wallpaper Hub</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button type="button" class="nav-item active" data-page="wallpapers">
+          <span class="nav-icon">🖼</span>
+          <span data-i18n="navLibrary">Обої</span>
+        </button>
+        <button type="button" class="nav-item" data-page="friends">
+          <span class="nav-icon">👥</span>
+          <span data-i18n="navFriends">Друзі</span>
+        </button>
+        <button type="button" class="nav-item" data-page="profile">
+          <span class="nav-icon">👤</span>
+          <span data-i18n="navProfile">Профіль</span>
+        </button>
+        <button type="button" class="nav-item" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span data-i18n="navSettings">Налаштування</span>
+        </button>
+      </nav>
+      <button type="button" class="nav-item nav-logout" data-page="logout">
+        <span class="nav-icon">↩</span>
+        <span data-i18n="logout">Вихід</span>
+      </button>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title" id="topbar-title" data-i18n="navLibrary">Обої</h1>
+          <span class="user-badge">@<span id="header-username"></span></span>
+        </div>
+        <div class="topbar-right">
+          <label class="lang-switch">
+            <span data-i18n="language">Мова</span>
+            <select id="app-lang" class="select select-sm">
+              <option value="uk">UA</option>
+              <option value="en">EN</option>
+            </select>
+          </label>
+          <label class="theme-switch" title="Theme">
+            <input type="checkbox" id="theme-toggle">
+            <span class="theme-slider"></span>
+          </label>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="page active" id="page-wallpapers">
+          
+          <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+            <button id="btn-tab-library" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer; font-weight: bold; opacity: 1;">Бібліотека</button>
+            <button id="btn-tab-collection" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer; font-weight: bold; opacity: 0.5;">Моя колекція</button>
+            <button id="btn-upload" type="button" style="margin-left: auto; background: var(--accent); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;">Завантажити свої обої</button>
+            <input id="upload-input" type="file" accept=".png,.jpg,.jpeg,.gif,.webp,image/png,image/jpeg,image/gif,image/webp" style="display:none">
+          </div>
+
+          <!-- Upload modal (moved to body end for proper overlay) -->
+
+          <div id="section-library">
+            <div id="category-filters" style="margin-bottom: 15px; display: flex; gap: 10px; overflow-x: auto;">
+              <button class="cat-btn btn active" data-category="all">Всі</button>
+              <button class="cat-btn btn" data-category="авто">Машини</button>
+              <button class="cat-btn btn" data-category="природа">Природа</button>
+              <button class="cat-btn btn" data-category="тварини">Тварини</button>
+              <button class="cat-btn btn" data-category="море">Море</button>
+              <button class="cat-btn btn" data-category="космос">Космос</button>
+              <button class="cat-btn btn" data-category="абстракція">Абстракція</button>
+            </div>
+            
+            <div id="library-grid" class="pinterest-grid"></div>
+          </div>
+
+          <div id="section-collection" class="hidden">
+            <div id="collection-grid" class="pinterest-grid"></div>
+          </div>
+        </section>
+
+        <section class="page hidden" id="page-friends">
+          <div class="grid-2">
+            <div class="card-section">
+              <h3 data-i18n="friends">Друзі</h3>
+              <div id="friends-list" class="list"></div>
+            </div>
+            <div class="card-section">
+              <h3 data-i18n="searchUsers">Пошук користувачів</h3>
+              <div class="search-bar">
+                <input id="search-users-input" type="text" data-i18n-placeholder="searchPlaceholder">
+                <button type="button" class="btn btn-primary" id="btn-search-users" data-i18n="search">Шукати</button>
+              </div>
+              <div id="search-results" class="list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page hidden" id="page-profile">
+          <div id="profile-stats" class="stats-grid"></div>
+          <div class="grid-2">
+            <div class="card-section">
+              <h3 data-i18n="editProfile">Редагувати профіль</h3>
+              <form id="edit-profile-form" class="form-stack">
+                <label class="input-group">
+                  <span data-i18n="username">Ім'я користувача</span>
+                  <input id="profile-username" type="text" required>
+                </label>
+                <label class="input-group">
+                  <span data-i18n="profileName">Ім'я профілю</span>
+                  <input id="profile-name" type="text" required>
+                </label>
+                <button type="submit" class="btn btn-primary" data-i18n="saveProfile">Зберегти профіль</button>
+              </form>
+            </div>
+            <div class="card-section">
+              <h3 data-i18n="changePassword">Змінити пароль</h3>
+              <form id="change-password-form" class="form-stack">
+                <label class="input-group">
+                  <span data-i18n="currentPassword">Поточний пароль</span>
+                  <input id="pwd-current" type="password" required>
+                </label>
+                <label class="input-group">
+                  <span data-i18n="newPassword">Новий пароль</span>
+                  <input id="pwd-new" type="password" required minlength="4">
+                </label>
+                <button type="submit" class="btn btn-secondary" data-i18n="changePassword">Змінити пароль</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="page hidden" id="page-settings">
+          <div id="settings-view" class="stats-grid"></div>
+          <div class="card-section settings-card">
+            <label class="setting-row">
+              <span data-i18n="language">Мова</span>
+              <select id="settings-language" class="select">
+                <option value="uk">Українська</option>
+                <option value="en">English</option>
+              </select>
+            </label>
+            <label class="setting-row">
+              <span data-i18n="toggleTheme">Світла / темна тема</span>
+              <label class="theme-switch">
+                <input type="checkbox" id="settings-theme-toggle">
+                <span class="theme-slider"></span>
+              </label>
+            </label>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <!-- Upload modal (moved here so native select lists are not clipped by scrollable containers) -->
+  <div id="upload-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width:420px;">
+      <h3 data-i18n="uploadModalTitle">Завантажити шпалери</h3>
+      <div class="form-stack">
+        <label class="input-group">
+          <span data-i18n="uploadName">Назва</span>
+          <input id="upload-title" type="text">
+        </label>
+        <label class="input-group">
+          <span data-i18n="uploadCategory">Категорія</span>
+          <select id="upload-category" class="select" required>
+            <option value="">-- Оберіть категорію --</option>
+            <option value="авто">Машини</option>
+            <option value="природа">Природа</option>
+            <option value="тварини">Тварини</option>
+            <option value="море">Море</option>
+            <option value="космос">Космос</option>
+            <option value="абстракція">Абстракція</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button id="upload-cancel" class="btn btn-ghost" data-i18n="uploadCancel">Скасувати</button>
+          <button id="upload-submit" class="btn btn-primary" data-i18n="uploadSubmit">Завантажити</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
